@@ -42,7 +42,7 @@ jobs:
 
       - name: Train genre classifier
         run: |
-          python -m ml_pipeline.train_genre
+          python -m ml-pipeline.train_genre
 
       - name: Upload model to Hugging Face Hub
         env:
