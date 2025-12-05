@@ -1,5 +1,5 @@
 import os
-from huggingface_hub import HfApi, HfFolder, create_repo, upload_file
+from huggingface_hub import HfApi, create_repo, upload_file
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -10,11 +10,9 @@ META_LOCAL_PATH = "artifacts/genre_meta.json"
 
 def upload_to_hub():
     token = os.getenv("HF_TOKEN")
-    
-    if token is None:
+    if not token:
         raise RuntimeError("HF_TOKEN environment variable is not set")
-    
-    HfFolder.save_token(token)
+
     api = HfApi()
 
     create_repo(
@@ -40,9 +38,8 @@ def upload_to_hub():
         repo_id=HF_REPO_ID,
         token=token,
         repo_type="model",
-        commit_message="Update metadata",
+        commit_message="Update genre metadata",
     )
-
 
 if __name__ == "__main__":
     upload_to_hub()
