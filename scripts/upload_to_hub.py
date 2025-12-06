@@ -1,5 +1,5 @@
 import os
-from huggingface_hub import hf_hub_download, HfApi, HfFolder, create_repo, upload_file
+from huggingface_hub import hf_hub_download, HfApi, create_repo, upload_file
 from dotenv import load_dotenv
 import json
 
@@ -30,7 +30,6 @@ def upload_to_hub():
     if token is None:
         raise RuntimeError("HF_TOKEN not set")
 
-    HfFolder.save_token(token)
     api = HfApi()
 
     create_repo(repo_id=HF_REPO_ID, token=token, repo_type="model", private=False, exist_ok=True)
