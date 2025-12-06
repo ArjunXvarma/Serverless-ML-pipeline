@@ -60,6 +60,7 @@ def build_multi_label_matrix(df: pd.DataFrame):
 
 
 def make_train_test(df: pd.DataFrame, cfg: TrainingConfig):
+    df["overview"] = df["title"] + " " + df["overview"]
     X = df["overview"].astype(str).tolist()
     Y, genre_names = build_multi_label_matrix(df)
 

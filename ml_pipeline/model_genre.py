@@ -1,6 +1,7 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.multiclass import OneVsRestClassifier
+from sklearn.svm import LinearSVC
 from sklearn.pipeline import Pipeline
 from .config import TrainingConfig
 
@@ -18,7 +19,7 @@ def build_genre_model(cfg: TrainingConfig) -> Pipeline:
             (
                 'clf',
                 OneVsRestClassifier(
-                    LogisticRegression(max_iter=1000)
+                    LinearSVC(C=1.0)
                 ),
             )
         ]

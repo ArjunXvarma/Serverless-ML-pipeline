@@ -2,6 +2,7 @@ import os
 import json
 import joblib
 from sklearn.metrics import f1_score, precision_score, recall_score
+import numpy as np
 from .config import TrainingConfig
 from .data_utils import load_raw_movies, make_train_test
 from .model_genre import build_genre_model
@@ -10,6 +11,9 @@ RAW_PATH = "data/raw/movies.csv"
 ARTIFACT_DIR = "artifacts"
 MODEL_PATH = os.path.join(ARTIFACT_DIR, "genre_model.joblib")
 META_PATH = os.path.join(ARTIFACT_DIR, "genre_meta.json")
+
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
 
 def train_and_evaluate():
     os.makedirs(ARTIFACT_DIR, exist_ok=True)
@@ -26,7 +30,12 @@ def train_and_evaluate():
     model.fit(X_train, Y_train)
 
     print("Evaluating...")
-    Y_pred = model.predict(X_test)
+
+    raw_scores = model.decision_function(X_test)
+    probs = sigmoid(raw_scores)
+
+    threshold = 0.25
+    Y_pred = (probs >= threshold).astype(int)
 
     metrics = {
         "precision_micro": float(precision_score(Y_test, Y_pred, average="micro", zero_division=0)),
@@ -37,6 +46,7 @@ def train_and_evaluate():
         "f1_macro": float(f1_score(Y_test, Y_pred, average="macro", zero_division=0)),
         "n_train": len(X_train),
         "n_test": len(X_test),
+        "threshold": threshold,
     }
 
     genre_scores = {}
