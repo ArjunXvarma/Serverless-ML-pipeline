@@ -1,7 +1,7 @@
 import os
 import json
 import joblib
-from sklearn.metrics import f1_score
+from sklearn.metrics import f1_score, precision_score, recall_score
 from .config import TrainingConfig
 from .data_utils import load_raw_movies, make_train_test
 from .model_genre import build_genre_model
@@ -28,15 +28,25 @@ def train_and_evaluate():
     print("Evaluating...")
     Y_pred = model.predict(X_test)
 
-    f1_micro = f1_score(Y_test, Y_pred, average="micro", zero_division=0)
-    f1_macro = f1_score(Y_test, Y_pred, average="macro", zero_division=0)
-
     metrics = {
-        "f1_micro": float(f1_micro),
-        "f1_macro": float(f1_macro),
-        "n_train": int(len(X_train)),
-        "n_test": int(len(X_test)),
+        "precision_micro": float(precision_score(Y_test, Y_pred, average="micro", zero_division=0)),
+        "recall_micro": float(recall_score(Y_test, Y_pred, average="micro", zero_division=0)),
+        "f1_micro": float(f1_score(Y_test, Y_pred, average="micro", zero_division=0)),
+        "precision_macro": float(precision_score(Y_test, Y_pred, average="macro", zero_division=0)),
+        "recall_macro": float(recall_score(Y_test, Y_pred, average="macro", zero_division=0)),
+        "f1_macro": float(f1_score(Y_test, Y_pred, average="macro", zero_division=0)),
+        "n_train": len(X_train),
+        "n_test": len(X_test),
     }
+
+    genre_scores = {}
+    for idx, genre_name in enumerate(genre_names):
+        y_true = Y_test[:, idx]
+        y_pred = Y_pred[:, idx]
+        f1 = f1_score(y_true, y_pred, zero_division=0)
+        genre_scores[genre_name] = float(f1)
+
+    metrics["per_genre_f1"] = genre_scores
 
     print("Saving model and metadata...")
     joblib.dump(model, MODEL_PATH)
