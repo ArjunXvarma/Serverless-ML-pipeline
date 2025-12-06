@@ -127,7 +127,7 @@ Tools:
 ![Github Actions run log](./docs/images/github-actions-log.png)
 
 Latest model metrics
-```
+```python
 {
     'precision_micro': 0.1532142123639351, 
     'recall_micro': 0.9880794701986755, 
