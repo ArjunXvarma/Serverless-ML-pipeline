@@ -120,7 +120,6 @@ Tools:
 | 🔗 **Live Hugging Face Space** | 👉 [link](https://arjun-varma-tmdb-genre-demo.hf.space/?__theme=system&deep_link=uuDed8RzLJI) |
 | 🧠 **Model Card / Artifacts** | 👉 [link](https://huggingface.co/arjun-varma/tmdb-genre-classifier) |
 
-> _(Add screenshots here)_  
 - UI prediction screenshot  
 ![HF Space demo](./docs/images/HF-Space-Demo.png)
 
@@ -128,7 +127,7 @@ Tools:
 ![Github Actions run log](./docs/images/github-actions-log.png)
 
 Latest model metrics
-```json
+```
 {
     'precision_micro': 0.1532142123639351, 
     'recall_micro': 0.9880794701986755, 
