@@ -45,8 +45,8 @@ def fetch_tmdb_movies(pages=5, category='popular', language='en-US'):
 def main():
     os.makedirs(os.path.dirname(RAW_PATH), exist_ok=True)
 
-    df_pop = fetch_tmdb_movies(category='popular')
-    df_top = fetch_tmdb_movies(category='top_rated')
+    df_pop = fetch_tmdb_movies(pages=20, category="popular")
+    df_top = fetch_tmdb_movies(pages=20, category="top_rated")
 
     df = pd.concat([df_pop, df_top], ignore_index=True).drop_duplicates(subset=["id"])
     df = df[(df["original_language"] == "en") & df["overview"].notna()]
